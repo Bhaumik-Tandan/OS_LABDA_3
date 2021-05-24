@@ -3,34 +3,27 @@
 using namespace std;
 main()
 {
-    //cout << "1)FIFO\n2)LRU\n3)OPTIMAL\nEnter your choice : ";
-    int o = 1;
-    // cin >> o;
-    //cout << "Enter the number of elements in page reference string: ";
-    int n = 7;
-    // cin >> n;
+    cout << "1)FIFO\n2)LRU\n3)OPTIMAL\nEnter your choice : ";
+    int o;
+    cin >> o;
+    cout << "Enter the number of elements in page reference string: ";
+    int n;
+    cin >> n;
     int *p = (int *)malloc(sizeof(int) * n);
-    p[0] = 1;
-    p[1] = 3;
-    p[2] = 0;
-    p[3] = 3;
-    p[4] = 5;
-    p[5] = 6;
-    p[6] = 3;
-    // cout << "Enter the page reference string: ";
-    // for (int i = 0; i < n; i++)
-    //     cin >> p[i];
-    //cout << "Enter the number of elements in page reference string: ";
-    int fn = 3;
-    // cin >> fn;
-    int *f = (int *)malloc(sizeof(int) * fn);
+    cout << "Enter the page reference string: ";
+    for (int i = 0; i < n; i++)
+        cin >> p[i];
+    cout << "Enter the number of elements in page reference string: ";
+    int fn;
+    cin >> fn;
+    int *f = (int *)malloc(sizeof(int) * fn), *q;
     for (int i = 0; i < fn; i++)
         f[i] = -1;
     cout << "\n\n"
          << left << setw(25) << setfill(' ') << "Action";
     cout << left << setw(20) << setfill(' ') << "Before";
     cout << left << setw(20) << setfill(' ') << "After";
-    int ph = 0, pf = 0, re = 0;
+    int ph = 0, pf = 0, re = 0, e = 0;
     for (int i = 0; i < n; i++)
     {
         int fl = 0;
@@ -47,15 +40,58 @@ main()
         {
             cout << endl
                  << left << setw(25) << setfill(' ') << "Page Fault";
-            cout << left << setw(20) << setfill(' ');
             for (int j = fn - 1; j >= 0; j--)
                 cout << f[j] << " ";
-            f[re] = p[i];
-            re = (re + 1) % fn;
-            cout << left << setw(20);
+            if (o == 1)
+            {
+                f[re] = p[i];
+                re = (re + 1) % fn;
+            }
+            else if (o == 2)
+            {
+                int t = 0, b;
+                for (int j = 0; j < fn; j++)
+                {
+                    int k;
+                    for (k = i - 1; k >= 0; k--)
+                        if (f[j] == p[k])
+                            break;
+                    if (i - k > t)
+                    {
+                        t = i - k;
+                        b = j;
+                    }
+                }
+                f[b] = p[i];
+            }
+            else
+            {
+                if (e < fn)
+                    f[e++] = p[i];
+                else
+                {
+                    int t = 0, b;
+                    for (int j = 0; j < fn; j++)
+                    {
+                        int k;
+                        for (k = i + 1; k < n; k++)
+                            if (f[j] == p[k])
+                                break;
+                        if (k - i > t)
+                        {
+                            t = k - i;
+                            b = j;
+                        }
+                    }
+                    f[b] = p[i];
+                }
+            }
+
+            cout << left << setw(15) << setfill(' ') << " ";
             for (int j = fn - 1; j >= 0; j--)
                 cout << f[j] << " ";
             pf++;
         }
     }
+    cout << "\n\nTotal Page Faults: " << pf << "\nTotal Page Hits: " << ph;
 }
