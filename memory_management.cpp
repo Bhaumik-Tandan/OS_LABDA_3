@@ -8,7 +8,7 @@ typedef struct
 } block;
 main()
 {
-    cout << "1)First Fit\n2)Best Fit\n3)Worst Fit\nEnter your choice :";
+    cout << "1)First Fit\n2)Best Fit\n3)Worst Fit\nEnter your choice: ";
     int o;
     cin >> o;
     cout << "Enter the number of processes: ";
