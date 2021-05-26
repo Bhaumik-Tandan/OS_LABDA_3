@@ -13,7 +13,7 @@ main()
     cout << "Enter the page reference string: ";
     for (int i = 0; i < n; i++)
         cin >> p[i];
-    cout << "Enter the number of elements in page reference string: ";
+    cout << "Enter the number of page frames: ";
     int fn;
     cin >> fn;
     int *f = (int *)malloc(sizeof(int) * fn), *q;
